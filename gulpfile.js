@@ -66,6 +66,7 @@ const MDL_COMPONENTS = [
 const ESM_DEPS = [
   'import firebase from \'firebase/compat/app\'',
   'import \'firebase/compat/auth\'',
+  'import \'firebase/compat/app-check\'',
   'import dialogPolyfill from \'dialog-polyfill\'',
 ].concat(MDL_COMPONENTS.map(component => `import \'material-design-lite/src/${component}\'`));
 
@@ -83,11 +84,11 @@ const ESM_EXPORT = 'var auth = firebaseui.auth;' +
 
 // Adds the cjs module requirement and exports firebaseui.
 const NPM_MODULE_WRAPPER = OPTIMIZATION_LEVEL === 'WHITESPACE_ONLY' ?
-    'var firebase=require(\'firebase/compat/app\');require(\'firebase/compat/auth\');' +
+    'var firebase=require(\'firebase/compat/app\');require(\'firebase/compat/auth\');require(\'firebase/compat/app-check\');' +
     DEFAULT_IMPORT_FIX + '%output%' + DIALOG_POLYFILL +
     'module.exports=firebaseui;' :
     '(function() { var firebase=require(\'firebase/compat/app\');' +
-    'require(\'firebase/compat/auth\');' + DEFAULT_IMPORT_FIX + '%output% ' +
+    'require(\'firebase/compat/auth\');' + 'require(\'firebase/compat/app-check\');' + DEFAULT_IMPORT_FIX + '%output% ' +
     DIALOG_POLYFILL + '})();' + 'module.exports=firebaseui;';
 
 // Adds the module requirement and exports firebaseui.
@@ -223,6 +224,7 @@ function buildFirebaseUiJs(locale) {
     define: `goog.LOCALE='${locale}'`,
     externs: [
       'firebase-externs/firebase-app-externs.js',
+      'firebase-externs/firebase-app-check-externs.js',
       'firebase-externs/firebase-auth-externs.js',
       'firebase-externs/firebase-client-auth-externs.js'
     ],

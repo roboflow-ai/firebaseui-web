@@ -99,10 +99,10 @@ goog.requireType('firebaseui.auth.ui.page.Base');
 /**
  * @param {!firebase.auth.Auth} auth The Firebase Auth instance.
  * @param {string=} opt_appId The optional app id.
- * @param {string=} appCheckToken The optional app id.
+ * @param {firebase.appCheck.Provider=} appCheckProvider The optional app check provider.
  * @constructor @struct
  */
-firebaseui.auth.AuthUI = function(auth, opt_appId, appCheckToken) {
+firebaseui.auth.AuthUI = function(auth, opt_appId, appCheckProvider) {
   /** @private {boolean} Whether the current instance is deleted. */
   this.deleted_ = false;
   // Check if an instance with the same key exists. If so, throw an error,
@@ -128,12 +128,10 @@ firebaseui.auth.AuthUI = function(auth, opt_appId, appCheckToken) {
   var tempApp = firebase.initializeApp({
     ...auth['app']['options']
   }, auth['app']['name'] + firebaseui.auth.AuthUI.TEMP_APP_NAME_SUFFIX_);
-  if (appCheckToken) {
+  if (appCheckProvider) {
     const appCheck = firebase.appCheck(tempApp);
     appCheck.activate(
-        new firebase.appCheck.ReCaptchaEnterpriseProvider(
-            appCheckToken
-        ),
+        appCheckProvider,
         true // Set to true to allow auto-refresh.
     );
   }

@@ -33,7 +33,7 @@ firebase.appCheck = function (app) {};
 firebase.appCheck.AppCheck = function () {};
 
 /**
- * @param {firebase.appCheck.ReCaptchaEnterpriseProvider} provider
+ * @param {firebase.appCheck.Provider} provider
  * @param {boolean} refresh
  */
 firebase.appCheck.AppCheck.prototype.activate = function (provider, refresh) {};
@@ -41,4 +41,4 @@ firebase.appCheck.AppCheck.prototype.activate = function (provider, refresh) {};
 /**
  * @constructor
  */
-firebase.appCheck.ReCaptchaEnterpriseProvider = function (appCheckToken) {};
+firebase.appCheck.Provider = function (appCheckToken) {};

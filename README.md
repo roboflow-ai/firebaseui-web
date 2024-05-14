@@ -1660,6 +1660,11 @@ have the following installed:
 - npm (should be included with Node.js)
 - Java SE Runtime Environment 8
 
+You may need to set JAVA_HOME to the correct path. For example, on macOS:
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+```
+
 In order to run the demo and tests, you must also have:
 - Python (2.7)
 

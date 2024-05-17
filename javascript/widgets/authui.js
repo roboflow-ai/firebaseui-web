@@ -99,9 +99,10 @@ goog.requireType('firebaseui.auth.ui.page.Base');
 /**
  * @param {!firebase.auth.Auth} auth The Firebase Auth instance.
  * @param {string=} opt_appId The optional app id.
+ * @param {firebase.appCheck.Provider=} appCheckProvider The optional app check provider.
  * @constructor @struct
  */
-firebaseui.auth.AuthUI = function(auth, opt_appId) {
+firebaseui.auth.AuthUI = function(auth, opt_appId, appCheckProvider) {
   /** @private {boolean} Whether the current instance is deleted. */
   this.deleted_ = false;
   // Check if an instance with the same key exists. If so, throw an error,
@@ -125,9 +126,15 @@ firebaseui.auth.AuthUI = function(auth, opt_appId) {
   // Log FirebaseUI on external Auth instance.
   firebaseui.auth.AuthUI.logFirebaseUI_(this.auth_);
   var tempApp = firebase.initializeApp({
-    'apiKey': auth['app']['options']['apiKey'],
-    'authDomain': auth['app']['options']['authDomain']
+    ...auth['app']['options']
   }, auth['app']['name'] + firebaseui.auth.AuthUI.TEMP_APP_NAME_SUFFIX_);
+  if (appCheckProvider) {
+    const appCheck = firebase.appCheck(tempApp);
+    appCheck.activate(
+        appCheckProvider,
+        true // Set to true to allow auto-refresh.
+    );
+  }
   /**
    * @private {!firebase.auth.Auth} The temporary internal Firebase Auth
    *     instance.
